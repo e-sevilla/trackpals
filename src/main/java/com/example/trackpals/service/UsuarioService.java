@@ -1,11 +1,11 @@
 package com.example.trackpals.service;
 
+import com.example.trackpals.exception.AttributeException;
+import com.example.trackpals.exception.ResourceNotFoundException;
 import com.example.trackpals.model.Usuario;
 import com.example.trackpals.repository.UsuarioRepository;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -19,31 +19,45 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario getUsuario(String username){
-        return usuarioRepository.findByUsername(username);
+    public Usuario getUsuarioById(String id) throws ResourceNotFoundException {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
     }
 
-    public List<Usuario> searchUsuarios(String username){
-        return usuarioRepository.searchUsuarios(username);
+    public List<Usuario> searchUsuariosByName(String nombre){
+        return usuarioRepository.searchUsuarios(nombre);
     }
 
-    public Usuario createUsuario(Usuario usuario){
+    public Usuario createUsuario(Usuario usuario) throws AttributeException {
+        //Comprobar que el nombre y el email no existen
+        boolean existeNombre = usuarioRepository.existsByNombre(usuario.getNombre());
+        boolean existeEmail = usuarioRepository.existsByEmail(usuario.getEmail());
+        if (existeNombre || existeEmail){
+            String message = "Ese ";
+            message += (existeNombre) ? "nombre" : "";
+            message += (message.length() != 4) ? " e " : "";
+            message += (existeEmail) ? "email" : "";
+            throw new AttributeException(message);
+        }
+        //Guardar usuario
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario updateUsuario(String id, Usuario usuario){
-        Usuario foundUsuario = usuarioRepository
-                .findById(id)
-                .orElseThrow(RuntimeException::new);
-        foundUsuario.setUsername(usuario.getUsername());
+    public Usuario updateUsuario(String id, Usuario usuario) throws ResourceNotFoundException {
+        Usuario foundUsuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
         foundUsuario.setContrasenia(usuario.getContrasenia());
+        foundUsuario.setTelefono(usuario.getTelefono());
+        foundUsuario.setFechaNac(usuario.getFechaNac());
+        foundUsuario.setDireccion(usuario.getDireccion());
+        foundUsuario.setDescripcion(usuario.getDescripcion());
+        foundUsuario.setFoto(usuario.getFoto());
         return usuarioRepository.save(foundUsuario);
     }
 
-    public void deleteUsuario(String id){
-//        Usuario foundUsuario = usuarioRepository
-//                .findById(id)
-//                .orElseThrow(RuntimeException::new);
+    public void deleteUsuario(String id) throws ResourceNotFoundException {
+        Usuario foundUsuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
         usuarioRepository.deleteById(id);
     }
 

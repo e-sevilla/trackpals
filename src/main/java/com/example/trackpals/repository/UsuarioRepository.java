@@ -9,13 +9,15 @@ import java.util.List;
 
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, String> {
+    public boolean existsByNombre(String nombre);
+    public boolean existsByEmail(String email);
 
     // Buscar el usuario cuyo nombre coincida exactamente con el buscado
-    @Query("{'username': ?0}")
-    public Usuario findByUsername(String username);
+    @Query("{'nombre': ?0}")
+    public Usuario findByNombre(String nombre);
 
     // Buscar todos los usuarios cuyo nombre contenga la cadena a buscar
-    @Query("{'username': {$regex: ?0}}")
-    public List<Usuario> searchUsuarios(String username);
+    @Query("{'nombre': {$regex: ?0}}")
+    public List<Usuario> searchUsuarios(String nombre);
 
 }
