@@ -7,6 +7,8 @@ import com.example.trackpals.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -14,6 +16,16 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    public String encriptarContrasenia(String contrasenia) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] contraseniaCifrada = md.digest(contrasenia.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : contraseniaCifrada) {
+            sb.append(String.format("%02X", b));
+        }
+        return sb.toString();
+    }
 
     public List<Usuario>getAllUsuarios(){
         return usuarioRepository.findAll();
@@ -24,6 +36,13 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("usuario"));
     }
 
+    //Buscar el usuario cuyo nombre coincida exactamente con el buscado
+    public Usuario getUsuarioByName(String nombre) throws ResourceNotFoundException {
+        return usuarioRepository.findByNombre(nombre)
+                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
+    }
+
+    //Buscar usuarios cuyo nombre contenga la cadena a buscar
     public List<Usuario> searchUsuariosByName(String nombre){
         return usuarioRepository.searchUsuarios(nombre);
     }
@@ -35,7 +54,7 @@ public class UsuarioService {
         if (existeNombre || existeEmail){
             String message = "Ese ";
             message += (existeNombre) ? "nombre" : "";
-            message += (message.length() != 4) ? " e " : "";
+            message += (existeNombre && existeEmail) ? " e " : "";
             message += (existeEmail) ? "email" : "";
             throw new AttributeException(message);
         }
@@ -47,11 +66,12 @@ public class UsuarioService {
         Usuario foundUsuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("usuario"));
         foundUsuario.setContrasenia(usuario.getContrasenia());
-        foundUsuario.setTelefono(usuario.getTelefono());
         foundUsuario.setFechaNac(usuario.getFechaNac());
         foundUsuario.setDireccion(usuario.getDireccion());
         foundUsuario.setDescripcion(usuario.getDescripcion());
         foundUsuario.setFoto(usuario.getFoto());
+        foundUsuario.setIdsAmigos(usuario.getIdsAmigos());
+        foundUsuario.setIdsExcursionesApuntado(usuario.getIdsExcursionesApuntado());
         return usuarioRepository.save(foundUsuario);
     }
 

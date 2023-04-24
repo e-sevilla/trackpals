@@ -1,18 +1,20 @@
 package com.example.trackpals.model;
 
+import com.example.trackpals.dto.UsuarioRegistroDto;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import org.bson.types.Binary;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Document(collection = "usuarios")
 public class Usuario {
 
@@ -28,13 +30,17 @@ public class Usuario {
     private String email;
     @NotBlank(message = "La contraseña es obligatoria")
     private String contrasenia;
-    private String telefono;
-    private Date fechaNac;
+    private Long fechaNac; //fecha en milisegundos
     private String direccion;
     private String descripcion;
-    private Binary foto;
+    private String foto; //foto en base64
     private List<String> idsAmigos = new ArrayList<>();
-    @DocumentReference
-    private List<Excursion> excursionesApuntado = new ArrayList<>();
+    private List<String> idsExcursionesApuntado = new ArrayList<>();
+
+    public Usuario(UsuarioRegistroDto usuarioRegistroDto){
+        this.nombre = usuarioRegistroDto.getNombre();
+        this.email = usuarioRegistroDto.getEmail();
+        this.contrasenia = usuarioRegistroDto.getContrasenia();
+    }
 
 }

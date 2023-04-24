@@ -1,17 +1,19 @@
 package com.example.trackpals.model;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import org.bson.types.Binary;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Document(collection = "excursiones")
 public class Excursion {
 
@@ -20,12 +22,12 @@ public class Excursion {
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
     @NotBlank(message = "La fecha es obligatoria")
-    private Date fecha;
+    private Long fecha; //fecha en milisegundos
     @NotBlank(message = "El lugar es obligatorio")
     private String puntoEncuentro;
     private Boolean privada = false;
     private String descripcion;
-    private Binary foto;
+    private String foto; //foto en base64
     @DocumentReference
     private Usuario creador;
     @DocumentReference
