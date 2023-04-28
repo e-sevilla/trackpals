@@ -1,6 +1,7 @@
 package com.example.trackpals.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +22,7 @@ public class Excursion {
     private String id;
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
-    @NotBlank(message = "La fecha es obligatoria")
+    @NotNull(message = "La fecha es obligatoria")
     private Long fecha; //fecha en milisegundos
     @NotBlank(message = "El lugar es obligatorio")
     private String puntoEncuentro;
@@ -29,6 +30,7 @@ public class Excursion {
     private String descripcion;
     private String foto; //foto en base64
     @DocumentReference
+    @NotNull(message = "El usuario creador es obligatorio")
     private Usuario creador;
     @DocumentReference
     private Ruta ruta;
