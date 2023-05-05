@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-//@CrossOrigin //habilita CORS para que el cliente Angular (u otro??) pueda consultar la API sin errores
+@CrossOrigin //habilita CORS para que el cliente Angular (u otro??) pueda consultar la API sin errores
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {

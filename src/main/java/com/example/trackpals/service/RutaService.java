@@ -20,7 +20,7 @@ public class RutaService {
 
     public Ruta getRutaById(String id) throws ResourceNotFoundException {
         return rutaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ruta"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ruta"));
     }
 
     public void createRuta(Ruta ruta){

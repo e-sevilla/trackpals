@@ -33,13 +33,13 @@ public class UsuarioService {
 
     public Usuario getUsuarioById(String id) throws ResourceNotFoundException {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario"));
     }
 
     //Buscar el usuario cuyo nombre coincida exactamente con el buscado
     public Usuario getUsuarioByName(String nombre) throws ResourceNotFoundException {
         return usuarioRepository.findByNombre(nombre)
-                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario"));
     }
 
     //Buscar usuarios cuyo nombre contenga la cadena a buscar
@@ -64,7 +64,7 @@ public class UsuarioService {
 
     public Usuario updateUsuario(String id, Usuario usuario) throws ResourceNotFoundException {
         Usuario foundUsuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario"));
         foundUsuario.setContrasenia(usuario.getContrasenia());
         foundUsuario.setFechaNac(usuario.getFechaNac());
         foundUsuario.setDireccion(usuario.getDireccion());
@@ -77,7 +77,7 @@ public class UsuarioService {
 
     public void deleteUsuario(String id) throws ResourceNotFoundException {
         Usuario foundUsuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("usuario"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario"));
         usuarioRepository.deleteById(id);
     }
 

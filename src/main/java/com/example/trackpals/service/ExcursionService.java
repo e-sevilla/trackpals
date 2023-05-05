@@ -20,7 +20,7 @@ public class ExcursionService {
 
     public Excursion getExcursionById(String id) throws ResourceNotFoundException {
         return excursionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("excursión"));
+                .orElseThrow(() -> new ResourceNotFoundException("Excursión"));
     }
 
     public Excursion createExcursion(Excursion excursion){
@@ -29,7 +29,7 @@ public class ExcursionService {
 
     public Excursion updateExcursion(String id, Excursion excursion) throws ResourceNotFoundException {
         Excursion foundExcursion = excursionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("excursión"));
+                .orElseThrow(() -> new ResourceNotFoundException("Excursión"));
         foundExcursion.setNombre(excursion.getNombre());
         foundExcursion.setFecha(excursion.getFecha());
         foundExcursion.setPuntoEncuentro(excursion.getPuntoEncuentro());
@@ -43,7 +43,7 @@ public class ExcursionService {
 
     public void deleteExcursion(String id) throws ResourceNotFoundException {
         Excursion foundExcursion = excursionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("excursión"));
+                .orElseThrow(() -> new ResourceNotFoundException("Excursión"));
         excursionRepository.deleteById(id);
     }
 

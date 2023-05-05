@@ -18,7 +18,7 @@ public class ExceptionControl {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ExceptionMessageDto throwResourceNotFoundException(ResourceNotFoundException e){
-        return new ExceptionMessageDto(HttpStatus.NOT_FOUND, e.getMessage() + "::no encontrado");
+        return new ExceptionMessageDto(HttpStatus.NOT_FOUND, e.getMessage() + " no encontrado");
     }
 
     //codigo 400

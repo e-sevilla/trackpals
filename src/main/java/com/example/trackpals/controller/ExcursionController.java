@@ -1,5 +1,6 @@
 package com.example.trackpals.controller;
 
+import com.example.trackpals.dto.ExcursionDto;
 import com.example.trackpals.exception.ResourceNotFoundException;
 import com.example.trackpals.model.Excursion;
 import com.example.trackpals.model.Mensaje;
@@ -14,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin //habilita CORS para que el cliente Angular (u otro??) pueda consultar la API sin errores
 @RestController
 @RequestMapping("/excursiones")
 public class ExcursionController {
@@ -37,8 +40,13 @@ public class ExcursionController {
 
     //Buscar todas las excursiones
     @GetMapping("")
-    public List<Excursion> listarExcursiones(){
-        return excursionService.getAllExcursiones();
+    public List<ExcursionDto> listarExcursiones(){
+        List<ExcursionDto> excursionDtoList = new ArrayList<>();
+        List<Excursion> excursionList = excursionService.getAllExcursiones();
+        for (Excursion excursion : excursionList) {
+            excursionDtoList.add(new ExcursionDto(excursion));
+        }
+        return excursionDtoList;
     }
 
     //Buscar una excursion por su id
