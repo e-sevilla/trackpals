@@ -49,10 +49,19 @@ public class ExcursionController {
         return excursionDtoList;
     }
 
-    //Buscar una excursion por su id
+    //Buscar una excursion por su id (devuelve la excursion menos sus mensajes)
     @GetMapping("{id}")
     public Excursion obtenerExcursion(@PathVariable String id) throws ResourceNotFoundException {
-        return excursionService.getExcursionById(id);
+        Excursion foundExcursion = excursionService.getExcursionById(id);
+        foundExcursion.setMensajes(null);
+        return foundExcursion;
+    }
+
+    //Buscar los mensajes de una excursion por su id
+    @GetMapping("{id}/mensaje")
+    public List<Mensaje> obtenerMensajesExcursion(@PathVariable String id) throws ResourceNotFoundException {
+        Excursion excursion = excursionService.getExcursionById(id);
+        return excursion.getMensajes();
     }
 
     //Crear una excursion
@@ -73,13 +82,14 @@ public class ExcursionController {
     //Añade un mensaje a una excursion
     @ResponseStatus(HttpStatus.CREATED) //codigo 201, indica que se ha creado algo
     @PostMapping("{id}/mensaje")
-    public Excursion nuevoMensaje(@PathVariable String id, @Valid @RequestBody Mensaje mensaje) throws ResourceNotFoundException {
+    public List<Mensaje> nuevoMensaje(@PathVariable String id, @Valid @RequestBody Mensaje mensaje) throws ResourceNotFoundException {
         Usuario foundUsuario = usuarioService.getUsuarioById(mensaje.getAutor().getId());
         mensaje.setAutor(foundUsuario);
         mensajeService.createMensaje(mensaje);
         Excursion foundExcursion = excursionService.getExcursionById(id);
         foundExcursion.getMensajes().add(mensaje);
-        return excursionService.updateExcursion(id, foundExcursion);
+        Excursion excursionModificada = excursionService.updateExcursion(id, foundExcursion);
+        return excursionModificada.getMensajes();
     }
 
 

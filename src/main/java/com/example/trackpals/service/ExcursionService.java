@@ -32,6 +32,8 @@ public class ExcursionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Excursión"));
         foundExcursion.setNombre(excursion.getNombre());
         foundExcursion.setFecha(excursion.getFecha());
+        foundExcursion.setLatitud(excursion.getLatitud());
+        foundExcursion.setLongitud(excursion.getLongitud());
         foundExcursion.setPuntoEncuentro(excursion.getPuntoEncuentro());
         foundExcursion.setPrivada(excursion.getPrivada());
         foundExcursion.setDescripcion(excursion.getDescripcion());
