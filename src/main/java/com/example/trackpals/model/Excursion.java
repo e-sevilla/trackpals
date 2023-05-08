@@ -24,9 +24,9 @@ public class Excursion {
     private String nombre;
     @NotNull(message = "La fecha es obligatoria")
     private Long fecha; //fecha en milisegundos
-    @NotNull(message = "El lugar es obligatorio")
+    @NotNull
     private Double latitud;
-    @NotNull(message = "El lugar es obligatorio")
+    @NotNull
     private Double longitud;
     @NotBlank(message = "El lugar es obligatorio")
     private String puntoEncuentro;

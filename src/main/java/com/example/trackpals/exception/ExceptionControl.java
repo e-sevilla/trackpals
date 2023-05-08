@@ -37,7 +37,7 @@ public class ExceptionControl {
         String message = "";
         List<ObjectError> errores = e.getBindingResult().getAllErrors();
         for (ObjectError error : errores){
-            message += (message.length() == 0) ? "" : "::";
+            message += (message.length() == 0) ? "" : "\n";
             message += error.getDefaultMessage();
         }
         return new ExceptionMessageDto(HttpStatus.NOT_ACCEPTABLE, message);
