@@ -38,6 +38,12 @@ public class ExcursionController {
         return rutaService.getAllRutas();
     }
 
+    //Buscar todas las rutas
+    @GetMapping("/rutas/{id}")
+    public Ruta obtenerRuta(@PathVariable String id) throws ResourceNotFoundException {
+        return rutaService.getRutaById(id);
+    }
+
     //Buscar todas las excursiones
     @GetMapping("")
     public List<ExcursionDto> listarExcursiones(){
@@ -72,6 +78,10 @@ public class ExcursionController {
         excursion.setCreador(foundUsuario);
         if (excursion.getRuta() != null && excursion.getRuta().getId() == null){
             rutaService.createRuta(excursion.getRuta());
+        }
+        else if (excursion.getRuta() != null && excursion.getRuta().getId() != null){
+            Ruta foundRuta = rutaService.getRutaById(excursion.getRuta().getId());
+            excursion.setRuta(foundRuta);
         }
         Excursion excursionCreada = excursionService.createExcursion(excursion);
         foundUsuario.getIdsExcursionesApuntado().add(excursionCreada.getId());
