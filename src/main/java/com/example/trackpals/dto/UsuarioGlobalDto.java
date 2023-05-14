@@ -16,12 +16,14 @@ public class UsuarioGlobalDto {
     private String nombre;
     private String foto;
     private List<String> idsAmigos;
+    private List<String> idsExcursionesApuntado;
 
     public UsuarioGlobalDto(Usuario usuario){
         this.id = usuario.getId();
         this.nombre = usuario.getNombre();
         this.foto = usuario.getFoto();
         this.idsAmigos = usuario.getIdsAmigos();
+        this.idsExcursionesApuntado = usuario.getIdsExcursionesApuntado();
     }
 
 }

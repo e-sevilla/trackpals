@@ -50,13 +50,13 @@ public class UsuarioController {
 
     //Modificar el perfil de un usuario
     @PostMapping("perfil")
-    public UsuarioPerfilDto actualizarPerfil(@RequestBody UsuarioPerfilDto usuarioPerfilDto) throws ResourceNotFoundException {
+    public UsuarioGlobalDto actualizarPerfil(@RequestBody UsuarioPerfilDto usuarioPerfilDto) throws ResourceNotFoundException {
         Usuario foundUsuario = usuarioService.getUsuarioById(usuarioPerfilDto.getId());
         foundUsuario.setFechaNac(usuarioPerfilDto.getFechaNac());
         foundUsuario.setDireccion(usuarioPerfilDto.getDireccion());
         foundUsuario.setDescripcion(usuarioPerfilDto.getDescripcion());
         foundUsuario.setFoto(usuarioPerfilDto.getFoto());
-        return new UsuarioPerfilDto(usuarioService.updateUsuario(usuarioPerfilDto.getId(), foundUsuario));
+        return new UsuarioGlobalDto(usuarioService.updateUsuario(usuarioPerfilDto.getId(), foundUsuario));
     }
 
     //Crear un usuario

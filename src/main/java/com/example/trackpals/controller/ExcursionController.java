@@ -73,7 +73,7 @@ public class ExcursionController {
     //Crear una excursion
     @ResponseStatus(HttpStatus.CREATED) //codigo 201, indica que se ha creado algo
     @PostMapping("")
-    public Excursion crearExcursion(@Valid @RequestBody Excursion excursion) throws ResourceNotFoundException {
+    public List<String> crearExcursion(@Valid @RequestBody Excursion excursion) throws ResourceNotFoundException {
         Usuario foundUsuario = usuarioService.getUsuarioById(excursion.getCreador().getId());
         excursion.setCreador(foundUsuario);
         if (excursion.getRuta() != null && excursion.getRuta().getId() == null){
@@ -86,7 +86,7 @@ public class ExcursionController {
         Excursion excursionCreada = excursionService.createExcursion(excursion);
         foundUsuario.getIdsExcursionesApuntado().add(excursionCreada.getId());
         usuarioService.updateUsuario(foundUsuario.getId(), foundUsuario);
-        return excursionCreada;
+        return foundUsuario.getIdsExcursionesApuntado();
     }
 
     //Añade un mensaje a una excursion
@@ -113,9 +113,9 @@ public class ExcursionController {
     }
 
     //Elimina una excursion
-    @ResponseStatus(HttpStatus.NO_CONTENT) //codigo 204, indica que no tiene contenido
-    @DeleteMapping("{id}")
-    public void borrarExcursion(@PathVariable String id) throws ResourceNotFoundException {
+    @ResponseStatus(HttpStatus.OK) //codigo 200
+    @GetMapping("borrar/{id}")
+    public List<String> borrarExcursion(@PathVariable String id) throws ResourceNotFoundException {
         Excursion foundExcursion = excursionService.getExcursionById(id);
         for (Mensaje mens : foundExcursion.getMensajes()) {
             mensajeService.deleteMensaje(mens);
@@ -126,7 +126,9 @@ public class ExcursionController {
                 usuarioService.updateUsuario(foundUsuario.getId(), foundUsuario);
             }
         }
+        Usuario usuarioCreador = usuarioService.getUsuarioById(foundExcursion.getCreador().getId());
         excursionService.deleteExcursion(id);
+        return usuarioCreador.getIdsExcursionesApuntado();
     }
 
 }
