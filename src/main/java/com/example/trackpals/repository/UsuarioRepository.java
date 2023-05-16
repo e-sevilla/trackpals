@@ -18,7 +18,11 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
     Optional<Usuario> findByNombre(String nombre);
 
     // Buscar todos los usuarios cuyo nombre contenga la cadena a buscar (case insensitive)
-    @Query("{'nombre': {$regex: ?0, $options: 'i'}}")
+    @Query(value = "{'nombre': {$regex: ?0, $options: 'i'}}", fields = "{'id': 1, 'nombre': 1, 'foto': 1}")
     List<Usuario> searchUsuarios(String nombre);
+
+    // Buscar usuarios de una lista de ids
+    @Query(value = "{'id': {$in : ?0}}", fields = "{'id': 1, 'nombre': 1, 'foto': 1}")
+    List<Usuario> findAllFriends(String[] ids);
 
 }

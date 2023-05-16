@@ -47,6 +47,9 @@ public class UsuarioService {
         return usuarioRepository.searchUsuarios(nombre);
     }
 
+    //Buscar los usuarios de una lista de ids
+    public List<Usuario> searchFriends(String[] ids) { return usuarioRepository.findAllFriends(ids); }
+
     public Usuario createUsuario(Usuario usuario) throws AttributeException {
         //Comprobar que el nombre y el email no existen
         boolean existeNombre = usuarioRepository.existsByNombre(usuario.getNombre());

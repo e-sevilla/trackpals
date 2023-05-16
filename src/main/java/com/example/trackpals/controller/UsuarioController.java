@@ -48,6 +48,12 @@ public class UsuarioController {
         return new UsuarioPerfilDto(usuario);
     }
 
+    //Buscar todos los usuarios de una lista de ids
+    @PostMapping("amigos")
+    public List<Usuario> obtenerPerfil(@RequestBody String[] ids) {
+        return usuarioService.searchFriends(ids);
+    }
+
     //Modificar el perfil de un usuario
     @PostMapping("perfil")
     public UsuarioGlobalDto actualizarPerfil(@RequestBody UsuarioPerfilDto usuarioPerfilDto) throws ResourceNotFoundException {

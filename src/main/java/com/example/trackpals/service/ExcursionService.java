@@ -6,6 +6,7 @@ import com.example.trackpals.repository.ExcursionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,9 +15,9 @@ public class ExcursionService {
     @Autowired
     ExcursionRepository excursionRepository;
 
-    public List<Excursion> getAllExcursiones(){
-        return excursionRepository.findAll();
-    }
+    public List<Excursion> getAllActive() { return excursionRepository.findAllActive(new Date().getTime()); }
+
+    public List<Excursion> getAllMine(String[] ids){ return excursionRepository.findAllMine(ids); }
 
     public Excursion getExcursionById(String id) throws ResourceNotFoundException {
         return excursionRepository.findById(id)
