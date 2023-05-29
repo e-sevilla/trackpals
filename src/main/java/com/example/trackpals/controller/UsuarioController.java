@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @CrossOrigin //habilita CORS para que el cliente Angular (u otro??) pueda consultar la API sin errores
@@ -68,8 +67,7 @@ public class UsuarioController {
     //Crear un usuario
     @ResponseStatus(HttpStatus.CREATED) //codigo 201, indica que se ha creado algo
     @PostMapping("")
-    public Usuario crearUsuario(@Valid @RequestBody UsuarioRegistroDto usuarioRegistroDto) throws AttributeException, NoSuchAlgorithmException {
-        usuarioRegistroDto.setContrasenia(usuarioService.encriptarContrasenia(usuarioRegistroDto.getContrasenia()));
+    public Usuario crearUsuario(@Valid @RequestBody UsuarioRegistroDto usuarioRegistroDto) throws AttributeException {
         return usuarioService.createUsuario(new Usuario(usuarioRegistroDto));
     }
 
@@ -77,7 +75,7 @@ public class UsuarioController {
     @PostMapping("login")
     public UsuarioGlobalDto loginUsuario(@RequestBody UsuarioRegistroDto usuarioRegistroDto) throws Exception {
         Usuario usuario = usuarioService.getUsuarioByName(usuarioRegistroDto.getNombre());
-        if (!usuario.getContrasenia().equals(usuarioService.encriptarContrasenia(usuarioRegistroDto.getContrasenia()))) {
+        if (!usuario.getContrasenia().equals(usuarioRegistroDto.getContrasenia())) {
             throw new Exception("Contraseña incorrecta");
         }
         return new UsuarioGlobalDto(usuario);

@@ -7,8 +7,6 @@ import com.example.trackpals.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -17,15 +15,6 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public String encriptarContrasenia(String contrasenia) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] contraseniaCifrada = md.digest(contrasenia.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (byte b : contraseniaCifrada) {
-            sb.append(String.format("%02X", b));
-        }
-        return sb.toString();
-    }
 
     public List<Usuario>getAllUsuarios(){
         return usuarioRepository.findAll();
